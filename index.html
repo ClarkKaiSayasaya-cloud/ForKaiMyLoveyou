@@ -286,7 +286,7 @@ const art1 = S => {
     hs("lamp", '<path d="M176 74Q200 30 224 74Z" fill="#8b6a32" stroke="#3a2a12" stroke-width="2"/><path d="M186 74Q200 48 214 74Z" fill="#c79a4a"/><ellipse cx="200" cy="76" rx="9" ry="6" fill="' + (dark ? "#5a4a30" : "#fff0c0") + '"/><path d="M214 70v22" stroke="#cdbf9c" stroke-width="1.5"/><circle cx="214" cy="94" r="3" fill="#cdbf9c"/><circle class="hl" cx="200" cy="64" r="34"/>', "lamp, with a pull cord") +
   '</g></g>' +
   '<g class="moth" fill="' + (lv ? "#ffd36b" : "#cdbf9c") + '" pointer-events="none"><path d="M0 0Q-6-5-7 1Q-5 5 0 2ZM0 0Q6-5 7 1Q5 5 0 2Z" transform="translate(' + (openCurtain ? 150 : 232) + ' ' + (openCurtain ? 50 : 58) + ')"/></g>' +
-  hs("frame", '<rect x="14" y="54" width="68" height="92" fill="#5a4220" stroke="#8b6a32" stroke-width="3"/><rect x="21" y="61" width="54" height="78" fill="' + (lv ? "#3f524c" : "#2d3a36") + '" stroke="#1a110b" stroke-width="2"/><path d="M21 139Q28 106 48 102Q68 106 75 139Z" fill="#14201e"/><ellipse cx="48" cy="88" rx="12" ry="16" fill="' + (lv ? "#6e7f75" : "#4c5a52") + '"/><g class="blink"><circle cx="43" cy="86" r="2.6" fill="#e0b45a"/><circle cx="54" cy="86" r="2.6" fill="#e0b45a"/></g><path d="' + (lv ? "M41 95Q48 103 55 95" : "M42 97Q48 101 54 97") + '" stroke="#14201e" fill="none" stroke-width="1.5"/><rect class="hl" x="14" y="54" width="68" height="92"/>', "portrait") +
+  hs("frame", '<rect x="14" y="54" width="68" height="92" fill="#5a4220" stroke="#8b6a32" stroke-width="3"/><rect x="21" y="61" width="54" height="78" fill="' + (lv ? "#3f524c" : "#2d3a36") + '" stroke="none"/><rect x="21" y="61" width="54" height="78" fill="none" stroke="#1a110b" stroke-width="2"/><rect class="hl" x="14" y="54" width="68" height="92"/>', "empty portrait frame") +
   hs("door", '<rect x="296" y="46" width="78" height="172" fill="#2a1b10" stroke="#6b5538" stroke-width="4"/><rect x="306" y="58" width="24" height="64" fill="none" stroke="#000" stroke-opacity=".5" stroke-width="2"/><rect x="340" y="58" width="24" height="64" fill="none" stroke="#000" stroke-opacity=".5" stroke-width="2"/><rect x="306" y="132" width="58" height="76" fill="none" stroke="#000" stroke-opacity=".5" stroke-width="2"/><circle cx="352" cy="140" r="5" fill="' + (S.box ? "#e0b45a" : "#8c2b22") + '"/>' + (S.box ? '<rect x="296" y="46" width="78" height="172" fill="#ffe3a0" opacity=".18"/>' : "") + '<rect class="hl" x="296" y="46" width="78" height="172"/>', "door") +
   '<rect x="104" y="148" width="182" height="10" fill="#4a3320"/><rect x="112" y="158" width="166" height="76" fill="#33231a" stroke="#1a110b" stroke-width="2"/><rect x="118" y="236" width="10" height="7" fill="#1a110b"/><rect x="262" y="236" width="10" height="7" fill="#1a110b"/>' +
   hs("drawer", '<rect x="124" y="166" width="142" height="26" fill="#2a1b10" stroke="#6b5538" stroke-width="2"/><path d="M180 179h30" stroke="#c79a4a" stroke-width="3"/><rect x="124" y="198" width="142" height="28" fill="#2a1b10" stroke="#1a110b" stroke-width="2"/><rect class="hl" x="124" y="166" width="142" height="26"/>', "drawer") +
@@ -312,7 +312,7 @@ const art2 = S => {
   '<g id="tv-screen">' + (S.order ? "" : '<circle cx="202" cy="168" r="12" fill="none" stroke="#8c2b22" stroke-width="2"/><g class="blink"><circle cx="202" cy="168" r="4" fill="#8c2b22"/></g>') + '</g>' +
   '<path d="M180 128L160 100M224 128L246 100" stroke="#6b5538" stroke-width="3"/>' +
   '<rect x="140" y="210" width="124" height="8" fill="#3a2a1a"/><rect x="148" y="218" width="8" height="26" fill="#3a2a1a"/><rect x="248" y="218" width="8" height="26" fill="#3a2a1a"/>' +
-  hs("cake", '<path d="M308 205Q308 150 338 150Q368 150 368 205Z" fill="#9fb8b0" fill-opacity="' + (S.found.length === 5 ? ".28" : ".14") + '" stroke="#9fb8b0" stroke-opacity=".7" stroke-width="2"/>' + (save.d2 ? "" : '<rect x="322" y="180" width="32" height="25" fill="#5a1d18"/><rect x="334" y="170" width="3" height="10" fill="#cdbf9c"/>') + '<rect x="306" y="205" width="64" height="6" fill="#6b5538"/><rect class="hl" x="306" y="150" width="64" height="62"/>', "sealed cake box") +
+  hs("cake", '<path d="M308 205Q308 150 338 150Q368 150 368 205Z" fill="#9fb8b0" fill-opacity="' + (S.found.length === 4 ? ".28" : ".14") + '" stroke="#9fb8b0" stroke-opacity=".7" stroke-width="2"/>' + (save.d2 ? "" : '<rect x="322" y="180" width="32" height="25" fill="#5a1d18"/><rect x="334" y="170" width="3" height="10" fill="#cdbf9c"/>') + '<rect x="306" y="205" width="64" height="6" fill="#6b5538"/><rect class="hl" x="306" y="150" width="64" height="62"/>', "sealed cake box") +
   (lv ? livelyLights() : "") +
   shade(lv ? .22 : 1);
 };
@@ -524,7 +524,7 @@ function room1(){
     ? "Your wish filled even the first room with sunlight and warmth. Everything feels alive because of you."
     : "A dim room. Something here has been waiting for you, " + CONFIG.herName + ". Touch everything.");
   wire($("#stage"), {
-    lamp: () => { S.dark = !S.dark; again(S.dark ? "You pull the cord. The dark settles in, and the portrait’s eyes glow." : "The light comes back, warm and trembling."); },
+    lamp: () => { S.dark = !S.dark; again(S.dark ? "You pull the cord. The dark settles in." : "The light comes back, warm and trembling."); },
     window: () => { S.curtain = !S.curtain; again(S.curtain ? "You pull the curtains aside. Soft light spills across the floor." : "The curtains close."); },
     clock: () => modal(
       '<svg viewBox="0 0 160 160" width="200" height="200" role="img" aria-label="antique wall clock">' +
@@ -540,7 +540,10 @@ function room1(){
       '</svg>' +
       '<p>The hands are frozen in place, yet it ticks anyway, as if waiting for you to read the time.</p>'
     ),
-    frame: () => { modal(photo(0)); },
+    frame: () => {
+      if (!S.key) { S.key = true; again("You take the key.", () => modal('<div style="text-align:center">' + ICON.key("#6b4a1a", 56) + "</div><p>Behind the empty frame, taped to the wood: a small brass key to open the cabinet.</p>")); }
+      else modal("<p>An empty frame, watching over the room.</p>");
+    },
     can: () => { S.can = true; again("A small watering can, still a little heavy."); },
     flower: () => {
       if (S.bloom || isLively()) return say("The sunflower beams warmly in the light.");
