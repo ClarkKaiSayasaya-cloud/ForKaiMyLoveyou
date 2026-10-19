@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#0d0a08">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Room of Beginnings</title>
+<style>
+:root{--bg:#0d0a08;--ink:#d9c7a3;--dim:#8a7a5e;--blood:#8c2b22;--gold:#e0b45a;--paper:#e8dcc0;--ink-dark:#2a1d12}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;min-height:100%;transition:background 1.2s ease,color 1.2s ease}
+body.lively-mode{--bg:#241811;--ink:#f7e7c4;--dim:#c9ad7c;background:radial-gradient(circle at 50% 20%,#382417 0%,#1c110a 100%)}
+body{padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);overflow-x:hidden;touch-action:manipulation;-webkit-text-size-adjust:100%}
+body::after{content:"";position:fixed;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:50;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.75) 100%);transition:opacity 1.5s ease}
+body.lively-mode::after{opacity:.25}
+.grain{position:fixed;top:-50%;right:-50%;bottom:-50%;left:-50%;z-index:49;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");animation:g 1s steps(4) infinite}
+@keyframes g{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}}
+header{text-align:center;padding:18px 12px 6px}
+h1{font-weight:normal;font-size:1.5rem;letter-spacing:.08em;margin:0;font-style:italic}
+nav{display:flex;gap:8px;justify-content:center;align-items:center;padding:10px 12px;flex-wrap:wrap}
+nav button{background:none;border:1px solid var(--dim);color:var(--ink);padding:8px 12px;font:inherit;font-size:.85rem;cursor:pointer;border-radius:2px}
+nav button[aria-current=true]{border-color:var(--gold);color:var(--gold)}
+nav button:disabled{opacity:.35;cursor:not-allowed}
+nav button:focus-visible,.hs:focus-visible,.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+#stage{max-width:760px;margin:0 auto;padding:0 12px}
+svg.scene{width:100%;height:auto;display:block;border:1px solid #3a2c1d;background:#150f0b;transition:border-color 1s ease,box-shadow 1s ease}
+body.lively-mode svg.scene{border-color:#c79a4a;box-shadow:0 0 35px rgba(255,211,107,.22)}
+.hs{cursor:pointer}
+.hs:hover .hl{opacity:.35}
+.hl{fill:var(--gold);opacity:0;transition:opacity .25s;stroke:#000;stroke-opacity:0;stroke-width:12;pointer-events:all}
+#msg{min-height:3.2em;text-align:center;font-style:italic;padding:12px 8px;color:var(--ink);line-height:1.5}
+#inv{text-align:center;color:var(--dim);font-size:.85rem;min-height:1.4em}
+.btn{background:var(--blood);color:#f3e6cc;border:0;padding:12px 20px;font:inherit;font-size:1rem;cursor:pointer;border-radius:2px;margin:6px}
+.modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:60;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:18px}
+.card{background:var(--paper);color:var(--ink-dark);max-width:420px;width:100%;padding:22px;border-radius:2px;box-shadow:0 0 40px #000;line-height:1.6;max-height:88vh;overflow:auto;text-align:center}
+.card .ph{width:100%;aspect-ratio:4/3;background:#3a2c1d;margin-bottom:12px;display:flex;align-items:center;justify-content:center;color:#b9a47c;font-style:italic;overflow:hidden}
+.card .ph img{width:100%;height:100%;object-fit:cover;transition:filter 1.5s ease}
+.card .ph img.bw{filter:grayscale(100%) contrast(1.15) sepia(0.3)}
+.card input{font:inherit;font-size:1.4rem;letter-spacing:.4em;text-align:center;width:9em;padding:8px;border:1px solid var(--ink-dark);background:#f5ecd5}
+.dials{display:flex;justify-content:center;gap:10px;margin:14px 0}
+.dial{display:flex;flex-direction:column;align-items:center;background:#2a1d12;border:2px solid #8b6a32;border-radius:4px;padding:4px;width:54px;color:#e8dcc0}
+.dial button{background:none;border:0;color:#e0b45a;font-size:1.1rem;cursor:pointer;padding:4px 10px;line-height:1}
+.dial span{font-size:1.45rem;font-family:monospace;padding:4px 0;user-select:none}
+.letter-box{background:var(--paper);color:var(--ink-dark);padding:26px 24px;border-radius:4px;border:2px solid #c79a4a;box-shadow:0 10px 35px rgba(0,0,0,.6);max-width:580px;margin:12px auto 24px;text-align:left;line-height:1.85;font-size:1.02rem;white-space:pre-wrap}
+.sub{color:var(--dim);font-size:.85rem;text-align:center;padding:4px 12px 28px}
+#conf{position:fixed;top:0;right:0;bottom:0;left:0;z-index:55;pointer-events:none}
+.flick{animation:fl 3s infinite}
+@keyframes fl{0%,100%{opacity:1}45%{opacity:.8}50%{opacity:.5}55%{opacity:.9}}
+.sway{transform-origin:200px 20px;animation:sw 4s ease-in-out infinite}
+@keyframes sw{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+.warm{background:#1d130b}
+.blink{animation:bl 6s infinite;transform-box:fill-box;transform-origin:center}@keyframes bl{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.moth{animation:mo 5s ease-in-out infinite}@keyframes mo{0%,100%{transform:translate(0,0)}50%{transform:translate(-6px,5px)}}
+.floatUp{animation:fu 4s ease-in-out infinite}@keyframes fu{0%,100%{transform:translateY(0);opacity:.85}50%{transform:translateY(-8px);opacity:1}}
+svg.scene{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.sq{aspect-ratio:1}
+.ghost{position:fixed;z-index:80;pointer-events:none;transform:translate(-50%,-50%);opacity:.92;filter:drop-shadow(0 4px 8px #000)}
+.it{display:inline-flex;align-items:center;gap:4px;margin:2px 6px;padding:6px 8px;border:1px solid transparent;border-radius:3px;cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none}
+.it.sel{border-color:var(--gold);background:rgba(224,180,90,.12)}
+.th{width:38px;height:38px;border:2px solid #8b7a5a;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;background:#3a2c1d;color:#d9c7a3}
+.th img{width:100%;height:100%;object-fit:cover;transition:filter 1.5s ease}
+.th img.bw{filter:grayscale(100%) contrast(1.15) sepia(0.3)}
+#inv{min-height:48px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center}
+@supports not (aspect-ratio:1){.card .ph{height:200px}.sq{height:90px}}
+@media (pointer:coarse){.grain{animation:none}}
+@media (prefers-reduced-motion:reduce){.grain,.flick,.sway,.blink,.moth,.floatUp{animation:none}}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<canvas id="conf"></canvas>
+<header><h1 id="title">The Room of Beginnings</h1></header>
+<nav id="nav"></nav>
+<main id="stage"></main>
+<p class="sub" id="sub"></p>
+
+<script>
+/* ============ EDIT THIS PART ============ */
+const CONFIG = {
+  herName: "Kai",
+  code: "0110",
+  codeHint: "The box answers to the day it all began (DDMM).",
+  photos: [
+    "",           // 0: Room I portrait (Empty)
+    "first.jpg",  // 1: Room I music box photo
+    "first.jpg",  // 2: Room II photo #1 (first.jpg)
+    "Secind.jpg", // 3: Room II photo #2 (Secind.jpg)
+    "THIRD.jpg",  // 4: Room II photo #3 (THIRD.jpg)
+    "FOURTH.jpg", // 5: Room II photo #4 (FOURTH.jpg)
+    "FIFTH.jpg",  // 6: Room II photo #5 (FIFTH.jpg)
+    "SIX.jpg"     // 7: Room III picture frame photo (SIX.jpg)
+  ],
+  melody: [0, 3, 2, 4, 1, 3, 0],
+  bookLine: "Now read your letter. Its first line is hiding something.",
+  letterCode: "HH4M",
+  letterCodes: ["HH4M", "HH1B", "HH1BI"],
+  letterClue: "The television showed you where to look. Take the first character of each word it pointed to, in order.",
+  tvSeq: [1, 4, 5, 6],
+  clockCode: ["1923", "0723", "723"],
+  clockHint: "The notebook is bound by a four-dial brass clasp etched with tiny clock hands. Something in the first room kept time.",
+  letter: "Hello bebi, happy 18th birthday! I hope that happy ka ngayon and you enjoyed your party yesterday. I hope yung birthday mo ngayong year makes up sa birthday mo last year. I hope na you enjoy this small thing I made for you.\n\nIf you ask me kung ano wish ko para sayo, I wish you follow kung ano gusto mo gawin and don't let kahit sino man pigilan ka kung ano gusto mo. And lagi mo tandaan, lagi ako nandito para sayo, lagi ako nasa tabi mo para tulungan ka sa lahat. Kaya bebi, wag mo kalimutan na mahal na mahal kita.\n\nAlam mo bebi, na-appreciate ko yung effort na ginagawa mo—you always wake up so early para lang mag-aral, sometimes kahit antok ka pa hindi mo tinutuloy matulog para lang mag-review. Na-appreciate ko yan bebi. Kahit pagod na pagod ka or busy ka, you still have time para makipag-bonding para sakin. I really appreciate lahat ng ginagawa mo para sa relationship natin. Kahit minsan inaaway kita or pabago-bago mood ko, you're still here para sakin.\n\nBebi, I will always be here bebi para sa relationship natin. You're my one and only, my love forever, my gorgeous, smart, and cute. I love you so much bebi. Thank you for being the sun na nagpapaliwanag para sa aking buhay.\n\n— from superman"
+};
+/* ========================================= */
+
+const $ = s => document.querySelector(s);
+const NS = "http://www.w3.org/2000/svg";
+const ROOMS = [
+  {t:"The Room of Beginnings", s:"Room I · Oct 17"},
+  {t:"The Room of Memories", s:"Room II · Oct 18"},
+  {t:"The Birthday Room", s:"Room III · Oct 19"}
+];
+if (new URLSearchParams(location.search).get("reset")) { try { localStorage.removeItem("rm"); } catch(e) {} }
+let save = {};
+try { save = JSON.parse(localStorage.getItem("rm") || "{}"); } catch(e) {}
+const persist = () => { try { localStorage.setItem("rm", JSON.stringify(save)); } catch(e) {} };
+const isLively = () => !!(save.r3 && save.r3.out);
+
+const DAY = 3;
+let current = 1;
+let tvBgTimers = [];
+function clearTvBg(){ tvBgTimers.forEach(clearTimeout); tvBgTimers = []; }
+
+function say(t){ $("#msg").textContent = t; }
+function modal(html, onclose){
+  const m = document.createElement("div");
+  m.className = "modal";
+  m.innerHTML = '<div class="card">' + html + '<p><button class="btn" id="ok">Close</button></p></div>';
+  document.body.appendChild(m);
+  m.querySelector("#ok").onclick = () => { m.remove(); onclose && onclose(); };
+  return m;
+}
+function photo(i){
+  const src = CONFIG.photos[i % Math.max(1, CONFIG.photos.length)];
+  const bwClass = isLively() ? "" : " bw";
+  return '<div class="ph">' + (src ? '<img src="' + src + '" alt="" class="' + bwClass + '">' : "<span>An empty frame</span>") + "</div>";
+}
+
+/* Audio & Song Player */
+let ac, bgmTimer = null, bgmStep = 0, bgmMuted = false;
+const songAudio = new Audio("AWITIN MO AT ISASAYAW KO [ VST & CO. ] INSTRUMENTAL MINUS ONE.mp3");
+songAudio.loop = true;
+
+function playYouTubeSong(){
+  try {
+    songAudio.volume = 0.85;
+    songAudio.play().catch(e => console.log("Audio play blocked until user interaction:", e));
+  } catch(e) {}
+}
+
+const BGM_CHORDS = [
+  [220, 330, 523.25], [220, 392, 493.88], [174.61, 261.63, 440], [196, 293.66, 392],
+  [261.63, 392, 659.25], [220, 330, 587.33], [174.61, 349.23, 523.25], [196, 392, 493.88]
+];
+
+function startBGM(){
+  if (bgmTimer || bgmMuted || isLively()) return;
+  const tick = () => {
+    if (bgmMuted || isLively()) return;
+    try {
+      ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+      if (ac.state === "running") {
+        const chord = BGM_CHORDS[bgmStep % BGM_CHORDS.length];
+        chord.forEach((f, idx) => {
+          const o = ac.createOscillator(), g = ac.createGain();
+          o.type = "sine";
+          o.frequency.value = f;
+          const t = ac.currentTime + idx * 0.42;
+          g.gain.setValueAtTime(0, t);
+          g.gain.linearRampToValueAtTime(0.032, t + 0.06);
+          g.gain.exponentialRampToValueAtTime(0.0008, t + 1.6);
+          o.connect(g).connect(ac.destination);
+          o.start(t);
+          o.stop(t + 1.7);
+        });
+        bgmStep++;
+      }
+    } catch(e) {}
+    bgmTimer = setTimeout(tick, 1850);
+  };
+  tick();
+}
+
+function toggleBGM(){
+  bgmMuted = !bgmMuted;
+  if (bgmMuted) {
+    if (bgmTimer) { clearTimeout(bgmTimer); bgmTimer = null; }
+    songAudio.pause();
+  } else {
+    if (isLively()) playYouTubeSong();
+    else startBGM();
+  }
+  drawNav();
+}
+
+function chime(notes){
+  try {
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    notes.forEach((f, i) => {
+      if (!f) return;
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = "triangle"; o.frequency.value = f;
+      const t = ac.currentTime + i * .38;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.18, t + .02);
+      g.gain.exponentialRampToValueAtTime(.001, t + .9);
+      o.connect(g).connect(ac.destination); o.start(t); o.stop(t + 1);
+    });
+  } catch(e) {}
+}
+document.addEventListener("pointerdown", () => {
+  try {
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    if (ac.state === "suspended") ac.resume();
+    if (!isLively()) startBGM();
+  } catch(e) {}
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") { const b = document.querySelector(".modal #ok"); if (b) b.click(); } });
+const LULLABY = [392,440,523,440,392,330,392,0,330,392,440,392,330,294];
+
+/* scene helpers */
+function hs(id, shape, label, fn){
+  return '<g class="hs" tabindex="0" role="button" aria-label="' + label + '" data-id="' + id + '">' + shape + "</g>";
+}
+function wire(root, map){
+  root.querySelectorAll(".hs").forEach(el => {
+    const f = map[el.dataset.id];
+    el.onclick = () => f && f();
+    el.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); f && f(); } };
+  });
+}
+function room(svgInner, warm){
+  clearTvBg();
+  document.body.classList.toggle("lively-mode", isLively());
+  $("#stage").innerHTML =
+    '<svg class="scene' + (warm || isLively() ? " warm" : "") + '" viewBox="0 0 400 300" xmlns="' + NS + '">' + DEFS + "<g>" + svgInner + "</g></svg>" +
+    '<div id="msg"></div><div id="inv"></div><div id="extra" style="text-align:center"></div>';
+}
+const DEFS = '<defs>' +
+'<filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2.4"/></filter>' +
+'<pattern id="dam" width="26" height="30" patternUnits="userSpaceOnUse"><path d="M13 2Q19 9 13 15Q7 9 13 2ZM13 15Q20 22 13 29Q6 22 13 15Z" fill="none" stroke="#fff" stroke-opacity=".08" stroke-width="1.2"/><circle cx="0" cy="15" r="2" fill="#fff" fill-opacity=".07"/><circle cx="26" cy="15" r="2" fill="#fff" fill-opacity=".07"/></pattern>' +
+'<pattern id="wd" width="400" height="13" patternUnits="userSpaceOnUse"><rect width="400" height="13" fill="#1a110b"/><path d="M0 12.5H400" stroke="#000" stroke-width="1.6"/><path d="M0 6Q80 4 160 6T320 6T400 5" stroke="#2e1e12" fill="none"/></pattern>' +
+'<radialGradient id="lg" cx="50%" cy="0%" r="90%"><stop offset="0" stop-color="#ffe3a0" stop-opacity=".55"/><stop offset="1" stop-color="#ffe3a0" stop-opacity="0"/></radialGradient>' +
+'<radialGradient id="sunGlow" cx="50%" cy="35%" r="75%"><stop offset="0" stop-color="#fff4c2" stop-opacity=".65"/><stop offset=".6" stop-color="#ffd36b" stop-opacity=".22"/><stop offset="1" stop-color="#ffd36b" stop-opacity="0"/></radialGradient>' +
+'<linearGradient id="dk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient>' +
+'</defs>';
+
+const wall = (c, w = "#2a1d12") =>
+  '<rect width="400" height="300" fill="' + c + '"/><rect width="400" height="165" fill="url(#dam)"/>' +
+  '<rect y="165" width="400" height="50" fill="' + w + '"/>' +
+  [10,110,210,310].map(x => '<rect x="' + x + '" y="172" width="80" height="36" fill="none" stroke="#000" stroke-opacity=".5" stroke-width="2"/>').join("") +
+  '<rect y="161" width="400" height="5" fill="#4a3320"/><rect y="215" width="400" height="6" fill="#0a0604"/><rect y="221" width="400" height="79" fill="url(#wd)"/>';
+const shade = o => '<rect width="400" height="300" fill="url(#dk)" opacity="' + (o !== undefined ? o : 1) + '" pointer-events="none"/>';
+
+const livelyLights = () =>
+  '<g pointer-events="none">' +
+  '<rect width="400" height="300" fill="url(#sunGlow)"/>' +
+  '<path d="M0 14Q100 42 200 14Q300 42 400 14" stroke="#c79a4a" stroke-width="1.2" fill="none"/>' +
+  [25,65,105,145,185,225,265,305,345,380].map((x, i) => {
+    const u = ((x % 200) - 100) / 100, y = 14 + 14 * (1 - u * u);
+    return '<circle class="flick" cx="' + x + '" cy="' + (y + 3) + '" r="4.5" fill="' + ["#ffd36b","#ff9eb5","#ffe89e"][i % 3] + '" opacity=".9"/><circle cx="' + x + '" cy="' + (y + 3) + '" r="9" fill="#ffd36b" opacity=".22"/>';
+  }).join("") +
+  '<g class="floatUp">' +
+    '<path d="M75 180c-3-4-8-1-8 3c0 4 8 8 8 8s8-4 8-8c0-4-5-7-8-3z" fill="#e87a7a" opacity=".75"/>' +
+    '<path d="M328 155c-3-4-8-1-8 3c0 4 8 8 8 8s8-4 8-8c0-4-5-7-8-3z" fill="#ffd36b" opacity=".75"/>' +
+    '<path d="M142 115c-2-3-6-1-6 2c0 3 6 6 6 6s6-3 6-6c0-3-4-5-6-2z" fill="#ff9eb5" opacity=".7"/>' +
+    '<circle cx="280" cy="110" r="2.5" fill="#fff4c2"/><circle cx="115" cy="195" r="2" fill="#fff4c2"/><circle cx="225" cy="95" r="2.5" fill="#ffd36b"/>' +
+  '</g></g>';
+
+const art1 = S => {
+  const lv = isLively();
+  const dark = !lv && !!S.dark;
+  const petals = Array.from({length:12}, (_, i) => '<ellipse cx="250" cy="68" rx="5" ry="11" fill="#e8b830" stroke="#8a6a10" stroke-width=".8" transform="rotate(' + i * 30 + ' 250 84)"/>').join("");
+  const flower = (S.bloom || lv)
+    ? '<path d="M250 132V96" stroke="#4a6a34" stroke-width="3"/><path d="M250 120q-14-2-18-12q12 0 18 12z" fill="#4a6a34"/><path d="M250 112q12-2 17-12q-12 0-17 12z" fill="#4a6a34"/>' + petals + '<circle cx="250" cy="84" r="9" fill="#4a2a10"/><circle cx="250" cy="84" r="4" fill="#2a1508"/>'
+    : '<path d="M250 132Q250 112 264 108" stroke="#5e6a3a" stroke-width="3" fill="none"/><path d="M251 124q-10 0-14-8q10-2 14 8z" fill="#6a6a3a"/><circle cx="266" cy="109" r="8" fill="#6b5a22"/><circle cx="266" cy="109" r="4" fill="#3a2a10"/><path d="M262 101l-3-5M270 102l3-5M274 108l5-1" stroke="#8a7a3a" stroke-width="2"/>';
+  const openCurtain = S.curtain || lv;
+  const curtain = openCurtain
+    ? '<rect x="98" y="42" width="12" height="84" fill="#8c2b22"/><rect x="154" y="42" width="12" height="84" fill="#8c2b22"/>'
+    : '<rect x="98" y="42" width="34" height="84" fill="#5a1d18"/><rect x="132" y="42" width="34" height="84" fill="#4a1612"/><path d="M110 42v84M121 42v84M144 42v84M155 42v84" stroke="#000" stroke-opacity=".3"/>';
+  return wall(lv ? "#2d4248" : "#16262a", lv ? "#3d2919" : "#2a1d12") +
+  (dark ? "" : '<polygon points="200,40 100,222 300,222" fill="url(#lg)" pointer-events="none" class="flick"/>') +
+  '<ellipse cx="200" cy="264" rx="150" ry="22" fill="#5a1d18"/><ellipse cx="200" cy="264" rx="125" ry="16" fill="none" stroke="#c79a4a" stroke-opacity=".5" stroke-dasharray="4 3"/><ellipse cx="200" cy="264" rx="70" ry="9" fill="#3a100d"/>' +
+  hs("window", '<rect x="96" y="40" width="72" height="88" fill="' + (lv ? "#4a7a8c" : "#0b1418") + '" stroke="#6b5538" stroke-width="4"/>' + (openCurtain ? (lv ? '<circle cx="132" cy="70" r="16" fill="#ffe885"/><circle cx="132" cy="70" r="24" fill="#ffe885" opacity=".3"/>' : '<circle cx="132" cy="72" r="14" fill="#cfd8c8" opacity=".9"/><circle cx="127" cy="68" r="3" fill="#aab4a4"/>') : "") + '<path d="M132 40v88M96 84h72" stroke="#6b5538" stroke-width="3"/>' + curtain + '<rect class="hl" x="96" y="40" width="72" height="88"/>', "window with curtains") +
+  hs("clock", '<circle cx="252" cy="36" r="13" fill="#cdbf9c" stroke="#6b5538" stroke-width="3"/><path d="M252 36L248 40.5" stroke="#2a1d12" stroke-width="2.4" stroke-linecap="round"/><path d="M252 36L258 42.7" stroke="#2a1d12" stroke-width="1.6" stroke-linecap="round"/><circle class="hl" cx="252" cy="36" r="16"/>', "wall clock") +
+  '<g class="sway"><line x1="200" y1="0" x2="200" y2="40" stroke="#6b5538" stroke-width="2"/><g class="' + (dark ? "" : "flick") + '">' +
+    hs("lamp", '<path d="M176 74Q200 30 224 74Z" fill="#8b6a32" stroke="#3a2a12" stroke-width="2"/><path d="M186 74Q200 48 214 74Z" fill="#c79a4a"/><ellipse cx="200" cy="76" rx="9" ry="6" fill="' + (dark ? "#5a4a30" : "#fff0c0") + '"/><path d="M214 70v22" stroke="#cdbf9c" stroke-width="1.5"/><circle cx="214" cy="94" r="3" fill="#cdbf9c"/><circle class="hl" cx="200" cy="64" r="34"/>', "lamp, with a pull cord") +
+  '</g></g>' +
+  '<g class="moth" fill="' + (lv ? "#ffd36b" : "#cdbf9c") + '" pointer-events="none"><path d="M0 0Q-6-5-7 1Q-5 5 0 2ZM0 0Q6-5 7 1Q5 5 0 2Z" transform="translate(' + (openCurtain ? 150 : 232) + ' ' + (openCurtain ? 50 : 58) + ')"/></g>' +
+  hs("frame", '<rect x="14" y="54" width="68" height="92" fill="#5a4220" stroke="#8b6a32" stroke-width="3"/><rect x="21" y="61" width="54" height="78" fill="' + (lv ? "#3f524c" : "#2d3a36") + '" stroke="#1a110b" stroke-width="2"/><path d="M21 139Q28 106 48 102Q68 106 75 139Z" fill="#14201e"/><ellipse cx="48" cy="88" rx="12" ry="16" fill="' + (lv ? "#6e7f75" : "#4c5a52") + '"/><g class="blink"><circle cx="43" cy="86" r="2.6" fill="#e0b45a"/><circle cx="54" cy="86" r="2.6" fill="#e0b45a"/></g><path d="' + (lv ? "M41 95Q48 103 55 95" : "M42 97Q48 101 54 97") + '" stroke="#14201e" fill="none" stroke-width="1.5"/><rect class="hl" x="14" y="54" width="68" height="92"/>', "portrait") +
+  hs("door", '<rect x="296" y="46" width="78" height="172" fill="#2a1b10" stroke="#6b5538" stroke-width="4"/><rect x="306" y="58" width="24" height="64" fill="none" stroke="#000" stroke-opacity=".5" stroke-width="2"/><rect x="340" y="58" width="24" height="64" fill="none" stroke="#000" stroke-opacity=".5" stroke-width="2"/><rect x="306" y="132" width="58" height="76" fill="none" stroke="#000" stroke-opacity=".5" stroke-width="2"/><circle cx="352" cy="140" r="5" fill="' + (S.box ? "#e0b45a" : "#8c2b22") + '"/>' + (S.box ? '<rect x="296" y="46" width="78" height="172" fill="#ffe3a0" opacity=".18"/>' : "") + '<rect class="hl" x="296" y="46" width="78" height="172"/>', "door") +
+  '<rect x="104" y="148" width="182" height="10" fill="#4a3320"/><rect x="112" y="158" width="166" height="76" fill="#33231a" stroke="#1a110b" stroke-width="2"/><rect x="118" y="236" width="10" height="7" fill="#1a110b"/><rect x="262" y="236" width="10" height="7" fill="#1a110b"/>' +
+  hs("drawer", '<rect x="124" y="166" width="142" height="26" fill="#2a1b10" stroke="#6b5538" stroke-width="2"/><path d="M180 179h30" stroke="#c79a4a" stroke-width="3"/><rect x="124" y="198" width="142" height="28" fill="#2a1b10" stroke="#1a110b" stroke-width="2"/><rect class="hl" x="124" y="166" width="142" height="26"/>', "drawer") +
+  hs("music", '<rect x="118" y="130" width="42" height="18" fill="#5a3a22" stroke="#8b6a32"/><rect x="118" y="130" width="42" height="5" fill="#8b6a32"/><path d="M139 130v-12M133 123h12" stroke="#cdbf9c" stroke-width="2"/><circle cx="139" cy="114" r="3" fill="#cdbf9c"/><rect class="hl" x="116" y="112" width="46" height="36"/>', "music box") +
+  hs("box", '<rect x="172" y="128" width="50" height="20" fill="#6b5538" stroke="#2a1d12" stroke-width="2"/><rect x="172" y="128" width="50" height="6" fill="#8b6a32"/><rect x="192" y="136" width="10" height="9" fill="' + (S.box ? "#e0b45a" : "#8c2b22") + '"/><circle cx="197" cy="139" r="1.8" fill="#000"/><rect class="hl" x="170" y="124" width="54" height="26"/>', "locked box") +
+  hs("flower", '<path d="M238 148l4-18h20l4 18z" fill="#8c4a2a" stroke="#3a2010"/><rect x="241" y="130" width="22" height="4" fill="#3a2010"/>' + flower + '<rect class="hl" x="232" y="62" width="52" height="86"/>', "sunflower in a pot") +
+  (S.can ? "" : hs("can", '<path d="M28 250v-18h24v18z" fill="#4a6a64" stroke="#1a110b"/><path d="M52 240h10l6-9" stroke="#4a6a64" stroke-width="4" fill="none"/><path d="M28 236q-9-2-9-12" stroke="#4a6a64" stroke-width="3" fill="none"/><rect class="hl" x="16" y="222" width="54" height="30"/>', "watering can")) +
+  (lv ? livelyLights() : "") +
+  (dark ? '<rect width="400" height="300" fill="#000" opacity=".55" pointer-events="none"/><g class="blink" pointer-events="none"><circle cx="43" cy="86" r="3.2" fill="#ffd36b"/><circle cx="54" cy="86" r="3.2" fill="#ffd36b"/></g>' : "") +
+  shade(lv ? .22 : 1);
+};
+
+const art2 = S => {
+  const lv = isLively();
+  return wall(lv ? "#38293b" : "#1e1820", lv ? "#3d2919" : "#2a1d12") +
+  '<rect x="28" y="40" width="70" height="100" fill="' + (lv ? "#4a7a8c" : "#0b1418") + '" stroke="#6b5538" stroke-width="4"/>' +
+  (lv ? '<circle cx="70" cy="75" r="18" fill="#ffe885"/><circle cx="70" cy="75" r="26" fill="#ffe885" opacity=".3"/>' : '<circle cx="70" cy="75" r="16" fill="#cfd8c8" opacity=".85"/><circle cx="64" cy="70" r="3" fill="#aab4a4"/>') +
+  '<path d="M63 40v100M28 90h70" stroke="#6b5538" stroke-width="3"/>' +
+  '<polygon points="28,140 98,140 190,222 40,222" fill="' + (lv ? "#ffe89e" : "#cfd8c8") + '" opacity="' + (lv ? ".22" : ".07") + '" pointer-events="none"/>' +
+  '<path d="M110 38Q200 62 390 34" stroke="#8b7a5a" fill="none"/>' +
+  '<ellipse cx="200" cy="262" rx="140" ry="20" fill="' + (lv ? "#6b2a38" : "#3a1a22") + '"/><ellipse cx="200" cy="262" rx="110" ry="14" fill="none" stroke="' + (lv ? "#e0b45a" : "#9fb8b0") + '" stroke-opacity=".45" stroke-dasharray="3 4"/>' +
+  '<rect x="150" y="128" width="104" height="82" fill="#222c2a" stroke="#6b5538" stroke-width="5"/><rect x="160" y="138" width="84" height="62" fill="#0a0f0e"/><rect class="flick" x="160" y="138" width="84" height="62" fill="#6b8a80" opacity=".2"/>' +
+  '<g id="tv-screen">' + (S.order ? "" : '<circle cx="202" cy="168" r="12" fill="none" stroke="#8c2b22" stroke-width="2"/><g class="blink"><circle cx="202" cy="168" r="4" fill="#8c2b22"/></g>') + '</g>' +
+  '<path d="M180 128L160 100M224 128L246 100" stroke="#6b5538" stroke-width="3"/>' +
+  '<rect x="140" y="210" width="124" height="8" fill="#3a2a1a"/><rect x="148" y="218" width="8" height="26" fill="#3a2a1a"/><rect x="248" y="218" width="8" height="26" fill="#3a2a1a"/>' +
+  hs("cake", '<path d="M308 205Q308 150 338 150Q368 150 368 205Z" fill="#9fb8b0" fill-opacity="' + (S.found.length === 5 ? ".28" : ".14") + '" stroke="#9fb8b0" stroke-opacity=".7" stroke-width="2"/>' + (save.d2 ? "" : '<rect x="322" y="180" width="32" height="25" fill="#5a1d18"/><rect x="334" y="170" width="3" height="10" fill="#cdbf9c"/>') + '<rect x="306" y="205" width="64" height="6" fill="#6b5538"/><rect class="hl" x="306" y="150" width="64" height="62"/>', "sealed cake box") +
+  (lv ? livelyLights() : "") +
+  shade(lv ? .22 : 1);
+};
+
+const art3 = S => {
+  const lv = !!S.out;
+  return wall(lv ? "#6e482b" : "#3a2516", lv ? "#4d321b" : "#2b1b0e") +
+  '<polygon points="200,0 70,222 330,222" fill="url(#lg)" opacity="' + (lv ? ".95" : ".4") + '" pointer-events="none"/>' +
+  (lv ? '<rect width="400" height="300" fill="url(#sunGlow)" pointer-events="none"/>' : '') +
+  '<path d="M0 18Q100 52 200 18Q300 52 400 18" stroke="#c79a4a" stroke-width="1.5" fill="none"/>' +
+  [14,50,86,122,158,200,242,278,314,350,386].map((x, i) => {
+    const u = ((x % 200) - 100) / 100, y = 18 + 17 * (1 - u * u);
+    return '<path d="M' + (x - 8) + " " + y + 'h16l-8 17Z" fill="' + (lv ? ["#d94b43", "#ffd36b", "#59a89c", "#ff9eb5"][i % 4] : ["#8c2b22", "#c79a4a", "#4a6a64"][i % 3]) + '"/>' +
+      (lv ? '<circle class="flick" cx="' + x + '" cy="' + (y + 3) + '" r="3.5" fill="#fff6cc"/>' : '');
+  }).join("") +
+  '<ellipse cx="200" cy="262" rx="150" ry="22" fill="' + (lv ? "#8c372e" : "#5a221d") + '"/><ellipse cx="200" cy="262" rx="120" ry="15" fill="none" stroke="#e0b45a" stroke-opacity="' + (lv ? ".85" : ".45") + '" stroke-dasharray="4 3"/>' +
+  '<rect x="24" y="96" width="76" height="6" fill="#4a3320"/><path d="M56 96q-3-10 0-18h14q3 8 0 18z" fill="#4a6a64"/>' +
+  (lv ? '<circle cx="56" cy="70" r="6" fill="#ff9eb5"/><circle cx="63" cy="65" r="7" fill="#ffd36b"/><circle cx="70" cy="71" r="6" fill="#e87a7a"/>' : '<path d="M63 78q-2-12 6-18" stroke="#4a5e44" fill="none" stroke-width="2"/><circle cx="69" cy="58" r="5" fill="#c79a4a"/>') +
+  '<g class="' + (lv ? "floatUp" : "") + '">' +
+    '<line x1="315" y1="68" x2="328" y2="200" stroke="#cdbf9c" stroke-opacity=".7"/><ellipse cx="313" cy="52" rx="19" ry="23" fill="' + (lv ? "#d94b43" : "#8c2b22") + '"/>' +
+    '<line x1="352" y1="78" x2="342" y2="200" stroke="#cdbf9c" stroke-opacity=".7"/><ellipse cx="354" cy="60" rx="17" ry="21" fill="' + (lv ? "#59a89c" : "#4a6a64") + '"/>' +
+    (lv ? '<line x1="65" y1="125" x2="75" y2="210" stroke="#cdbf9c" stroke-opacity=".7"/><ellipse cx="64" cy="110" rx="17" ry="21" fill="#e0b45a"/>' : '') +
+  '</g>' +
+  '<path d="M104 160H296L306 226H94Z" fill="' + (lv ? "#8c372e" : "#6b2a24") + '"/><path d="M104 160H296" stroke="#e0b45a" stroke-width="3"/><path d="M120 160l-4 66M160 160l-3 66M240 160l3 66M280 160l4 66" stroke="#000" stroke-opacity=".2"/>' +
+  hs("cake3",
+    '<rect x="150" y="130" width="100" height="30" fill="#d8b096" stroke="#6b4a3a" stroke-width="2"/><rect x="165" y="110" width="70" height="20" fill="#f3dfd0" stroke="#6b4a3a" stroke-width="2"/><path d="M165 112q6 12 12 0t12 0 12 0 12 0 12 0" fill="#b8372b" stroke="#b8372b" stroke-width="3"/>' +
+    [175,200,225].map(x => '<rect x="' + (x - 3) + '" y="92" width="6" height="18" fill="#f3e6cc"/>' + (lv ? '<path d="M' + x + ' 90q5-8 0-14q-5-6 0-12" stroke="#fff4c2" stroke-opacity=".75" fill="none"/>' : '<ellipse class="flick" cx="' + x + '" cy="85" rx="5" ry="9" fill="#ffd36b"/><ellipse cx="' + x + '" cy="85" rx="10" ry="14" fill="#ffd36b" opacity=".25"/>')).join("") +
+    '<rect class="hl" x="145" y="70" width="110" height="94"/>',
+    "birthday cake"
+  ) +
+  (lv ? livelyLights() + '<text x="200" y="54" text-anchor="middle" fill="#fff4c2" font-size="15" font-style="italic" opacity=".95">Happy 18th Birthday, ' + CONFIG.herName + '!</text>' : "") +
+  shade(lv ? .12 : .55);
+};
+
+const unlocked = () => 1 + (save.d1 ? 1 : 0) + (save.d2 ? 1 : 0);
+const norm = v => v.replace(/\s/g, "").toUpperCase();
+const ICON = {
+  can: (c, z) => '<svg viewBox="0 0 40 40" width="' + z + '" height="' + z + '" role="img" aria-label="watering can" style="vertical-align:middle"><path d="M8 16h18v16H8z" fill="' + c + '"/><path d="M26 24h7l5-9" stroke="' + c + '" stroke-width="3" fill="none"/><path d="M8 20Q2 20 2 12" stroke="' + c + '" stroke-width="3" fill="none"/></svg>',
+  winder: (c, z) => '<svg viewBox="0 0 40 40" width="' + z + '" height="' + z + '" role="img" aria-label="winding key" style="vertical-align:middle"><path d="M20 6c-8 0-8 12 0 12c8 0 8-12 0-12z" fill="none" stroke="' + c + '" stroke-width="3"/><path d="M20 18v18M20 28h7M20 34h5" stroke="' + c + '" stroke-width="3" stroke-linecap="round"/></svg>',
+  key: (c, z) => '<svg viewBox="0 0 40 40" width="' + z + '" height="' + z + '" role="img" aria-label="brass key" style="vertical-align:middle"><circle cx="11" cy="13" r="7" fill="none" stroke="' + c + '" stroke-width="3"/><circle cx="11" cy="13" r="2" fill="' + c + '"/><path d="M16 18L35 37M28 30l4-4M32 34l4-4" stroke="' + c + '" stroke-width="3" fill="none" stroke-linecap="round"/></svg>',
+  gear: (c, z) => '<svg viewBox="0 0 40 40" width="' + z + '" height="' + z + '" role="img" aria-label="small gear" style="vertical-align:middle"><g fill="' + c + '">' + Array.from({length:8}, (_, i) => '<rect x="17.5" y="3" width="5" height="9" transform="rotate(' + i * 45 + ' 20 20)"/>').join("") + '<circle cx="20" cy="20" r="11"/></g><circle cx="20" cy="20" r="4" fill="#150f0b"/></svg>',
+  photo: (c, z) => '<svg viewBox="0 0 40 40" width="' + z + '" height="' + z + '" role="img" aria-label="tiny photograph" style="vertical-align:middle"><rect x="6" y="6" width="28" height="28" fill="none" stroke="' + c + '" stroke-width="3"/><circle cx="20" cy="16" r="4" fill="' + c + '"/><path d="M10 31Q20 18 30 31Z" fill="' + c + '"/></svg>'
+};
+
+/* Harder 3-round progressive 5-key Lullaby Simon puzzle */
+function simon(seq, ok){
+  const f = [392, 440, 523.25, 587.33, 659.25];
+  const labels = ["I", "II", "III", "IV", "V"];
+  const stages = [3, 5, seq.length];
+  let round = 0, step = 0, T = [], locked = false;
+  const m = modal(
+    '<p id="st">Listen closely and repeat the lullaby (Round 1/3).</p>' +
+    '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:12px 0">' +
+      f.map((_, i) => '<button class="btn sb" data-i="' + i + '" style="margin:0;padding:18px 0;font-size:1.05rem">' + labels[i] + "</button>").join("") +
+    '</div>' +
+    '<p id="se" style="min-height:1.4em;color:#8c2b22;font-size:.9rem"></p>' +
+    '<p><button class="btn" id="ls" style="background:#3a2c1d">Listen again</button></p>'
+  );
+  const bs = m.querySelectorAll(".sb");
+  const stop = () => { T.forEach(clearTimeout); T = []; bs.forEach(b => b.style.outline = ""); };
+  const play = () => {
+    stop();
+    step = 0;
+    locked = true;
+    const len = stages[round];
+    m.querySelector("#st").textContent = "Listen closely and repeat the lullaby (Round " + (round + 1) + "/3 · " + len + " notes).";
+    seq.slice(0, len).forEach((n, k) => {
+      T.push(setTimeout(() => {
+        chime([f[n]]);
+        bs[n].style.outline = "3px solid #e0b45a";
+        setTimeout(() => bs[n].style.outline = "", 280);
+      }, 450 + k * 520));
+    });
+    T.push(setTimeout(() => { locked = false; }, 450 + len * 520));
+  };
+  m.querySelector("#ls").onclick = () => { m.querySelector("#se").textContent = ""; play(); };
+  m.querySelector("#ok").addEventListener("click", stop);
+  bs.forEach(b => b.onclick = () => {
+    if (locked) return;
+    const i = +b.dataset.i;
+    chime([f[i]]);
+    b.style.outline = "3px solid #8c2b22";
+    setTimeout(() => b.style.outline = "", 200);
+    const len = stages[round];
+    if (i === seq[step]) {
+      m.querySelector("#se").textContent = "";
+      if (++step === len) {
+        if (++round === stages.length) {
+          stop();
+          setTimeout(() => { m.remove(); chime(LULLABY); ok(); }, 350);
+        } else {
+          locked = true;
+          m.querySelector("#se").style.color = "#4a6a34";
+          m.querySelector("#se").textContent = "Good. Now the melody grows longer…";
+          T.push(setTimeout(() => {
+            m.querySelector("#se").style.color = "#8c2b22";
+            m.querySelector("#se").textContent = "";
+            play();
+          }, 900));
+        }
+      }
+    } else {
+      round = 0;
+      m.querySelector("#se").style.color = "#8c2b22";
+      m.querySelector("#se").textContent = "Wrong note! Resetting to Round 1…";
+      locked = true;
+      T.push(setTimeout(play, 1100));
+    }
+  });
+  play();
+}
+
+function scratch(text, ok){
+  const m = modal('<div style="position:relative;height:120px;background:#f5ecd5;border:1px solid #8b7a5a;display:flex;align-items:center;justify-content:center;padding:10px;font-style:italic"><span>' + text + '</span><canvas id="sc" width="320" height="120" style="position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%;touch-action:none"></canvas></div><p style="font-size:.85rem">Rub the white tape away with your finger.</p>');
+  const c = m.querySelector("#sc"), x = c.getContext("2d");
+  x.fillStyle = "#f8f6ee"; x.fillRect(0, 0, 320, 120);
+  x.globalCompositeOperation = "destination-out"; x.lineWidth = 28; x.lineCap = "round";
+  let d = false, last, fired = false;
+  const pos = e => { const r = c.getBoundingClientRect(); return [(e.clientX - r.left) * 320 / r.width, (e.clientY - r.top) * 120 / r.height]; };
+  c.onpointerdown = e => { d = true; last = pos(e); c.setPointerCapture(e.pointerId); };
+  c.onpointermove = e => { if (!d) return; const p = pos(e); x.beginPath(); x.moveTo(last[0], last[1]); x.lineTo(p[0], p[1]); x.stroke(); last = p; };
+  c.onpointerup = () => { d = false; const g = x.getImageData(0, 0, 320, 120).data; let n = 0, t = 0; for (let i = 3; i < g.length; i += 388) { t++; if (g[i] < 40) n++; } if (!fired && n / t > .6) { fired = true; ok(); } };
+}
+
+function blow(ok){
+  const m = modal('<p>Close your eyes, make a birthday wish, and blow out your candles.</p><button class="btn" id="mic">Blow into your phone</button><br><button class="btn" id="tap" style="background:#3a2c1d">Or tap to blow</button><p id="be"></p>');
+  const done = () => { m.remove(); ok(); };
+  m.querySelector("#tap").onclick = done;
+  m.querySelector("#mic").onclick = async () => {
+    try {
+      const st = await navigator.mediaDevices.getUserMedia({audio:true});
+      const c = new (window.AudioContext || window.webkitAudioContext)(), an = c.createAnalyser(); an.fftSize = 512;
+      if (c.state === "suspended") c.resume(); c.createMediaStreamSource(st).connect(an);
+      const d = new Uint8Array(an.frequencyBinCount); let hits = 0;
+      m.querySelector("#be").textContent = "Go on, blow…";
+      (function loop(){ an.getByteFrequencyData(d); const low = d.slice(0, 12).reduce((a, b) => a + b, 0) / 12; hits = low > 150 ? hits + 1 : Math.max(0, hits - 1); if (hits > 8) { st.getTracks().forEach(t => t.stop()); done(); } else requestAnimationFrame(loop); })();
+    } catch(e) { m.querySelector("#be").textContent = "The mic isn’t available, so tap instead."; }
+  };
+}
+
+let holding = null;
+function dragItem(el, ghostHTML, onDrop, onTap){
+  el.onpointerdown = e => {
+    e.preventDefault();
+    const sx = e.clientX, sy = e.clientY; let g = null, moved = false;
+    try { el.setPointerCapture(e.pointerId); } catch(_) {}
+    const move = ev => {
+      if (!moved && Math.hypot(ev.clientX - sx, ev.clientY - sy) > 6) { moved = true; g = document.createElement("div"); g.className = "ghost"; g.innerHTML = ghostHTML; document.body.appendChild(g); }
+      if (g) { g.style.left = ev.clientX + "px"; g.style.top = ev.clientY + "px"; }
+    };
+    const up = ev => {
+      el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up);
+      if (g) g.remove();
+      if (moved) { const at = document.elementsFromPoint ? document.elementsFromPoint(ev.clientX, ev.clientY) : [document.elementFromPoint(ev.clientX, ev.clientY)]; onDrop(at); }
+      else onTap && onTap();
+    };
+    el.addEventListener("pointermove", move); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
+  };
+}
+function renderInv(items, use){
+  const box = $("#inv"); box.innerHTML = "";
+  items.forEach(it => {
+    const el = document.createElement("span");
+    el.className = "it" + (holding === it.id ? " sel" : ""); el.dataset.it = it.id;
+    el.innerHTML = it.html + (it.label ? "<span>" + it.label + "</span>" : "");
+    dragItem(el, it.html,
+      at => { const h = at.map(x => x && x.closest && x.closest(".hs")).find(Boolean); holding = null; if (h) use(it.id, h.dataset.id); else renderInv(items, use); },
+      () => { holding = holding === it.id ? null : it.id; renderInv(items, use); if (holding) say("Selected" + (it.label ? ": " + it.label : "") + ". Tap where to use it."); });
+    box.appendChild(el);
+  });
+}
+function holdWrap(use){
+  $("#stage").querySelectorAll(".hs").forEach(el => {
+    const f = el.onclick;
+    el.onclick = () => { if (holding) { const h = holding; holding = null; use(h, el.dataset.id); } else f && f(); };
+  });
+}
+
+/* ---------- ROOM 1 ---------- */
+function wind(ok){
+  let n = 0;
+  const m = modal('<p>Wind the music box.</p><button class="btn" id="w" style="padding:18px 30px;font-size:1.2rem">Turn the key (0/3)</button>');
+  const b = m.querySelector("#w");
+  b.onclick = () => { n++; chime([330 + n * 60]); b.textContent = "Turn the key (" + n + "/3)"; if (n === 3) { b.disabled = true; setTimeout(() => { m.remove(); ok(); }, 400); } };
+}
+function room1(){
+  const S = save.r1 = save.r1 || {};
+  holding = null;
+  if (S.drawer && !S.gear) S.gear = true;
+  if (S.song) S.bloom = S.gearIn = S.winderIn = S.wound = true;
+  room(art1(S));
+  const g = "#e0b45a";
+  const items = [];
+  if (S.key && !S.drawer) items.push({id:"key", html:ICON.key(g, 34), label:"key"});
+  if (S.gear && !S.gearIn) items.push({id:"gear", html:ICON.gear(g, 34), label:"gear"});
+  if (S.can && !S.bloom) items.push({id:"can", html:ICON.can(g, 34), label:"watering can"});
+  if (S.winder && !S.winderIn) items.push({id:"winder", html:ICON.winder(g, 34), label:"winding key"});
+  if (S.song) items.push({id:"photo", html:ICON.photo(g, 34), label:"photograph"});
+  const again = (msg, fn) => { persist(); room1(); say(msg); fn && fn(); };
+  const use = (id, t) => {
+    if (id === "key" && t === "drawer" && !S.drawer) { S.drawer = S.gear = true; return again("The key turns. The drawer slides open.", () => modal("<p><i>A torn note:</i></p><p>“" + CONFIG.codeHint + '”</p><div style="text-align:center">' + ICON.gear("#6b4a1a", 56) + "</div><p>Beneath it, something small and brass: a gear.</p>")); }
+    if (id === "can" && t === "flower" && !S.bloom) { S.bloom = S.winder = true; return again("You water it. The sunflower lifts and opens, and something small falls out of its center.", () => modal('<div style="text-align:center">' + ICON.winder("#6b4a1a", 56) + "</div><p>A small brass winding key, hidden in the flower.</p>")); }
+    if (id === "gear" && t === "music") { S.gearIn = true; return again(S.winderIn ? "Both parts are in. Now wind it." : "The gear clicks into place inside the box."); }
+    if (id === "winder" && t === "music") { S.winderIn = true; return again(S.gearIn ? "Both parts are in. Now wind it." : "The winding key slides into the side of the box."); }
+    again("That doesn’t belong there.");
+  };
+  renderInv(items, use);
+  say(isLively()
+    ? "Your wish filled even the first room with sunlight and warmth. Everything feels alive because of you."
+    : "A dim room. Something here has been waiting for you, " + CONFIG.herName + ". Touch everything.");
+  wire($("#stage"), {
+    lamp: () => { S.dark = !S.dark; again(S.dark ? "You pull the cord. The dark settles in, and the portrait’s eyes glow." : "The light comes back, warm and trembling."); },
+    window: () => { S.curtain = !S.curtain; again(S.curtain ? "You pull the curtains aside. Soft light spills across the floor." : "The curtains close."); },
+    clock: () => modal(
+      '<svg viewBox="0 0 160 160" width="200" height="200" role="img" aria-label="antique wall clock">' +
+        '<circle cx="80" cy="80" r="72" fill="#e8dcc0" stroke="#6b5538" stroke-width="6"/>' +
+        Array.from({length:60}, (_, i) => '<line x1="80" y1="12" x2="80" y2="' + (i % 5 === 0 ? 24 : 16) + '" stroke="#2a1d12" stroke-width="' + (i % 5 === 0 ? 3 : 1) + '" transform="rotate(' + i * 6 + ' 80 80)"/>').join("") +
+        '<text x="80" y="36" text-anchor="middle" fill="#2a1d12" font-size="11" font-weight="bold">12</text>' +
+        '<text x="128" y="84" text-anchor="middle" fill="#2a1d12" font-size="11" font-weight="bold">3</text>' +
+        '<text x="80" y="134" text-anchor="middle" fill="#2a1d12" font-size="11" font-weight="bold">6</text>' +
+        '<text x="32" y="84" text-anchor="middle" fill="#2a1d12" font-size="11" font-weight="bold">9</text>' +
+        '<path d="M80 80L54.9 108.5" stroke="#2a1d12" stroke-width="6" stroke-linecap="round"/>' +
+        '<path d="M80 80L117.5 121.6" stroke="#2a1d12" stroke-width="3.2" stroke-linecap="round"/>' +
+        '<circle cx="80" cy="80" r="5" fill="#8c2b22"/>' +
+      '</svg>' +
+      '<p>The hands are frozen in place, yet it ticks anyway, as if waiting for you to read the time.</p>'
+    ),
+    frame: () => { modal(photo(0)); },
+    can: () => { S.can = true; again("A small watering can, still a little heavy."); },
+    flower: () => {
+      if (S.bloom || isLively()) return say("The sunflower beams warmly in the light.");
+      say(S.can ? "The sunflower droops. It needs water: drag the can onto it, or tap the can, then tap the flower." : "The sunflower droops. Its soil is bone dry.");
+    },
+    drawer: () => {
+      if (S.drawer) return modal("<p>“" + CONFIG.codeHint + "”</p>");
+      say(S.key ? "It’s locked. Drag the key onto the drawer, or tap the key, then tap the drawer." : "Locked. Something small would open it.");
+    },
+    music: () => {
+      if (S.song) { chime(LULLABY); return say("The lullaby plays. The little dancer turns."); }
+      if (!S.gearIn) { chime([330, 294]); return say("The music box is silent. Something is missing inside it."); }
+      if (!S.winderIn) return say("The gear is in place, but there’s nothing to wind it with.");
+      const playPuzzle = () => simon(CONFIG.melody, () => {
+        S.song = true;
+        again("The box is listening now.", () => modal(photo(1) + "<p>The lid pops open. A tiny photograph, and the sound of a lock loosening nearby.</p>"));
+      });
+      if (!S.wound) {
+        wind(() => { S.wound = true; persist(); playPuzzle(); });
+      } else {
+        playPuzzle();
+      }
+    },
+    box: () => {
+      if (S.box) return say("The box is open and empty. Its secret is already yours.");
+      if (!S.drawer) return say("A box with four little dials. You’re missing a clue.");
+      if (!S.song) return say("The dials won’t turn. Something is still humming inside it.");
+      const m = modal('<p>Enter the four digits.</p><input id="c" inputmode="numeric" maxlength="4" autocomplete="off"><p id="e" style="color:#8c2b22;min-height:1.4em"></p>');
+      m.querySelector("#c").oninput = ev => {
+        if (ev.target.value.length === 4) {
+          if (ev.target.value === CONFIG.code) { S.box = true; persist(); m.remove(); modal("<p>Click. Inside the box: a cold brass handle, and the door lets out a long, slow breath.</p>", room1); }
+          else { m.querySelector("#e").textContent = "Nothing happens. Try again."; ev.target.value = ""; }
+        }
+      };
+    },
+    door: () => {
+      if (!S.box) return say("The door won’t move.");
+      save.d1 = true; persist();
+      modal("<p>The door opens onto another room. Something is waiting there.</p>", () => { current = 2; show(); });
+    }
+  });
+  holdWrap(use);
+}
+
+/* ---------- ROOM 2 ---------- */
+function playTV(seq, frame, done, onclose){
+  const m = modal('<div id="tvs" style="background:repeating-linear-gradient(0deg,#0a0f0e 0 2px,#111a18 2px 4px);border:6px solid #3a3a30;border-radius:10px;height:210px;display:flex;align-items:center;justify-content:center;color:#6b8a80;font-family:monospace;overflow:hidden"></div><p><button class="btn" id="rp" style="background:#3a2c1d">Replay</button></p>', onclose);
+  const scr = m.querySelector("#tvs"); let T = [];
+  const play = () => {
+    T.forEach(clearTimeout); T = [];
+    scr.innerHTML = "~ ~ ~";
+    seq.forEach((n, k) => { T.push(setTimeout(() => { scr.innerHTML = frame(n); }, 800 + k * 1600)); T.push(setTimeout(() => { scr.innerHTML = "~ ~ ~"; }, 800 + k * 1600 + 1150)); });
+    T.push(setTimeout(() => { done && done(); }, 800 + seq.length * 1600));
+  };
+  m.querySelector("#rp").onclick = play;
+  m.querySelector("#ok").addEventListener("click", () => T.forEach(clearTimeout));
+  play();
+}
+
+function startAmbientTV(srcFn, tagFn){
+  clearTvBg();
+  const g = $("#tv-screen");
+  if (!g) return;
+  const bwClass = isLively() ? "" : " bw";
+  const svgFrame = n => {
+    if (n <= 5) {
+      const s = srcFn(n - 1);
+      return s
+        ? '<image href="' + s + '" x="166" y="142" width="72" height="54" preserveAspectRatio="xMidYMid slice" class="' + bwClass + '"/>'
+        : '<rect x="174" y="144" width="56" height="50" fill="#222c2a" stroke="#8b7a5a" stroke-width="1.5"/><text x="202" y="177" text-anchor="middle" fill="#cdbf9c" font-size="24" font-family="Georgia,serif">' + tagFn(n - 1) + '</text>';
+    }
+    return '<text x="202" y="182" text-anchor="middle" fill="#e0b45a" font-size="38" font-family="monospace" font-weight="bold">' + n + '</text>';
+  };
+  const loop = () => {
+    if (!$("#tv-screen")) return;
+    $("#tv-screen").innerHTML = '<text x="202" y="172" text-anchor="middle" fill="#6b8a80" font-size="11" font-family="monospace">~ ~ ~</text>';
+    CONFIG.tvSeq.forEach((n, k) => {
+      tvBgTimers.push(setTimeout(() => { if ($("#tv-screen")) $("#tv-screen").innerHTML = svgFrame(n); }, 600 + k * 1500));
+      tvBgTimers.push(setTimeout(() => { if ($("#tv-screen")) $("#tv-screen").innerHTML = '<text x="202" y="172" text-anchor="middle" fill="#6b8a80" font-size="11" font-family="monospace">~ ~ ~</text>'; }, 600 + k * 1500 + 1100));
+    });
+    tvBgTimers.push(setTimeout(loop, 800 + CONFIG.tvSeq.length * 1500));
+  };
+  loop();
+}
+
+function clockLockModal(onUnlock){
+  const digits = [0, 0, 0, 0];
+  const m = modal(
+    '<p>' + CONFIG.clockHint + '</p>' +
+    '<div class="dials">' +
+      digits.map((d, i) =>
+        '<div class="dial">' +
+          '<button type="button" class="up" data-i="' + i + '" aria-label="Increase digit ' + (i + 1) + '">&#9650;</button>' +
+          '<span id="dl' + i + '">' + d + '</span>' +
+          '<button type="button" class="dn" data-i="' + i + '" aria-label="Decrease digit ' + (i + 1) + '">&#9660;</button>' +
+        '</div>'
+      ).join("") +
+    '</div>' +
+    '<p id="e" style="color:#8c2b22;min-height:1.4em;font-size:.9rem"></p>' +
+    '<button class="btn" id="try">Unlock Clasp</button>'
+  );
+  const checkCode = auto => {
+    const code = digits.join("");
+    if (CONFIG.clockCode.includes(code)) {
+      chime([523, 659, 784]);
+      m.remove();
+      onUnlock();
+      return true;
+    }
+    if (!auto) m.querySelector("#e").textContent = "The brass clasp stays locked. Look closely at the clock hands in Room I.";
+    return false;
+  };
+  m.querySelectorAll(".up").forEach(b => b.onclick = () => {
+    const i = +b.dataset.i;
+    digits[i] = (digits[i] + 1) % 10;
+    m.querySelector("#dl" + i).textContent = digits[i];
+    chime([360 + digits[i] * 20]);
+    checkCode(true);
+  });
+  m.querySelectorAll(".dn").forEach(b => b.onclick = () => {
+    const i = +b.dataset.i;
+    digits[i] = (digits[i] + 9) % 10;
+    m.querySelector("#dl" + i).textContent = digits[i];
+    chime([360 + digits[i] * 20]);
+    checkCode(true);
+  });
+  m.querySelector("#try").onclick = () => checkCode(false);
+}
+
+const PEG = [[122,44],[178,50],[236,52],[294,48],[350,40]];
+function room2(){
+  const S = save.r2 = save.r2 || {};
+  holding = null;
+  S.found = S.found || []; S.hung = S.hung || {};
+  if (S.order && !Object.keys(S.hung).length) { S.found = [0,1,2,3]; S.hung = {0:0,1:1,2:2,3:3}; }
+  const spots = [[60,90],[372,100],[110,255],[270,190]];
+  const src = i => CONFIG.photos.length ? CONFIG.photos[(i + 2) % CONFIG.photos.length] : "";
+  const tag = i => src(i) ? "" : "ABCD"[i];
+  const hungSet = Object.keys(S.hung).map(k => S.hung[k]);
+  const bwClass = isLively() ? "" : " bw";
+  const cardSvg = (i, p, r) => '<g transform="translate(' + p[0] + " " + p[1] + ") rotate(" + r + ' 15 0)"><rect x="12" y="-4" width="6" height="10" fill="#8b6a32"/><rect width="30" height="38" fill="#cdbf9c" stroke="#8b7a5a"/>' + (src(i) ? '<image href="' + src(i) + '" x="3" y="3" width="24" height="26" preserveAspectRatio="xMidYMid slice" class="' + bwClass + '"/>' : '<rect x="3" y="3" width="24" height="26" fill="#3a3a30"/><text x="15" y="22" text-anchor="middle" fill="#cdbf9c" font-size="12" font-family="Georgia,serif">' + tag(i) + "</text>") + "</g>";
+  const pegs = PEG.map((p, k) => k < 4 ? hs("peg" + k, (S.hung[k] !== undefined ? cardSvg(S.hung[k], p, S.order ? 0 : k * 3 - 6) : '<rect x="' + p[0] + '" y="' + p[1] + '" width="30" height="38" fill="none" stroke="#8b7a5a" stroke-dasharray="3 2"/>') + '<rect class="hl" x="' + p[0] + '" y="' + p[1] + '" width="30" height="38"/>', "clothesline slot " + (k + 1)) : "").join("");
+  const hidden = spots.map((p, i) => S.found.includes(i) ? "" : hs("h" + i, '<g transform="translate(' + p[0] + " " + p[1] + ") rotate(" + (i * 9 - 18) + ')"><rect x="-10" y="-12" width="20" height="24" fill="#cdbf9c" opacity=".55" stroke="#8b7a5a" stroke-width=".8"/><rect x="-8" y="-10" width="16" height="15" fill="#2a2a24" opacity=".75"/></g><circle class="hl" cx="' + p[0] + '" cy="' + p[1] + '" r="18"/>', "hidden photograph " + (i + 1))).join("");
+  const extra = hs("tv", '<rect class="hl" x="150" y="128" width="104" height="82"/>', "old television") +
+    hs("book", '<rect x="42" y="228" width="54" height="22" fill="#e8dcc0" stroke="#8b7a5a" stroke-width="2"/><rect x="42" y="228" width="10" height="22" fill="#8c2b22"/><path d="M60 236h28M60 242h20" stroke="#8b7a5a"/>' + (S.bookOpen ? "" : '<rect x="88" y="234" width="10" height="10" fill="#c79a4a" stroke="#2a1d12" stroke-width="1.2"/>') + '<rect class="hl" x="42" y="228" width="54" height="22"/>', "locked notebook");
+  room(art2(S) + pegs + hidden + extra);
+  if (S.order) startAmbientTV(src, tag);
+
+  const again = (msg, fn) => { persist(); room2(); say(msg); fn && fn(); };
+  const use = (id, t) => {
+    const m = /^peg(\d)$/.exec(t);
+    if (id[0] === "p" && m) {
+      const k = +m[1], i = +id.slice(1);
+      if (S.hung[k] !== undefined) return again("Something already hangs there.");
+      S.hung[k] = i;
+      if (Object.keys(S.hung).length < 4) return again("The photograph hangs from the line.");
+      const bad = Object.keys(S.hung).filter(q => S.hung[q] !== +q);
+      if (!bad.length) { S.order = true; persist(); room2(); return modal("<p>The film catches the light, every frame in its place. Somewhere in the room, the television begins to hum and play a sequence.</p>", () => { startAmbientTV(src, tag); say("The old television is playing a sequence of photographs."); }); }
+      bad.forEach(q => delete S.hung[q]);
+      return again((4 - bad.length) + " of 4 are in the right place. The others slip off the line.");
+    }
+    again("That doesn’t belong there.");
+  };
+  renderInv(S.found.filter(i => !hungSet.includes(i)).map(i => ({id: "p" + i, html: '<span class="th">' + (src(i) ? '<img src="' + src(i) + '" alt="" class="' + bwClass + '">' : tag(i)) + "</span>", label: ""})), use);
+  $("#extra").innerHTML = '<p style="color:var(--dim);font-size:.85rem;margin:2px">Photographs ' + S.found.length + "/4 (plus 1 from Room I) · Film " + (S.order ? "done" : hungSet.length + "/4") + " · TV " + (S.tv ? "done" : "–") + " · Notebook " + (S.book ? "done" : "–") + "</p>";
+  say(isLively()
+    ? "Golden light dances across your memories on the line. Your happiness brought this room to life too."
+    : "Four photographs are hidden in this room (plus the one from Room I), and a film hangs on the line. Find them, then fix the film.");
+  const map = {
+    cake: () => {
+      if (save.d2) { current = 3; show(); return; }
+      if (S.found.length < 4 || !S.order || !S.tv || !S.book) return say("The dome won’t lift. This room still has secrets to give up.");
+      const m = modal("<p>" + CONFIG.letterClue + '</p><input id="c" maxlength="5" autocomplete="off" style="width:7.5em"><p id="e" style="color:#8c2b22;min-height:1.4em"></p>');
+      m.querySelector("#c").oninput = ev => {
+        const v = norm(ev.target.value);
+        if (CONFIG.letterCodes.includes(v)) {
+          m.remove();
+          chime([523, 659, 784]);
+          save.d2 = true;
+          save.r3 = save.r3 || {};
+          persist();
+          modal("<p>The glass dome unlocks and lifts away. You carry the cake into the next room, where the candles are waiting for your wish.</p>", () => { current = 3; show(); });
+        } else if (v.length >= 4) {
+          m.querySelector("#e").textContent = "Nothing happens. Read your letter again.";
+          ev.target.value = "";
+        }
+      };
+    },
+    tv: () => {
+      if (!S.order) return say("Only static. Maybe the film on the clothesline needs fixing first.");
+      if (!S.tv) { S.tv = true; persist(); }
+      const frame = n => n <= 5
+        ? (src(n - 1)
+            ? '<div style="height:100%;display:flex;align-items:center;justify-content:center"><img src="' + src(n - 1) + '" alt="" style="max-height:185px;" class="' + bwClass + '"></div>'
+            : '<div style="text-align:center"><div style="font-size:4.2rem;color:#cdbf9c;border:3px solid #8b7a5a;padding:4px 28px;display:inline-block">' + tag(n - 1) + '</div></div>')
+        : '<span style="font-size:6rem;color:#e0b45a;font-weight:bold">' + n + "</span>";
+      playTV(
+        CONFIG.tvSeq,
+        frame,
+        () => { S.tv = true; persist(); },
+        () => {
+          room2();
+          say("As you step back, the television screen flickers and replays the sequence from the beginning.");
+        }
+      );
+    },
+    book: () => {
+      const reveal = () => scratch(CONFIG.bookLine, () => { S.book = true; persist(); setTimeout(room2, 900); });
+      if (S.book) return modal("<p><i>Inside the unlocked notebook:</i></p><p>“" + CONFIG.bookLine + "”</p>");
+      if (S.bookOpen) return reveal();
+      clockLockModal(() => {
+        S.bookOpen = true;
+        persist();
+        reveal();
+      });
+    }
+  };
+  PEG.forEach((p, k) => {
+    if (k < 4) map["peg" + k] = () => {
+      if (S.order) return say("The film is hanging perfectly in order now.");
+      if (S.hung[k] !== undefined) { delete S.hung[k]; return again("You take the photograph down."); }
+      say("An empty spot on the line. Drag a photograph here, or tap one in your items, then tap here.");
+    };
+  });
+  spots.forEach((p, i) => map["h" + i] = () => {
+    if (!S.found.includes(i)) S.found.push(i);
+    persist();
+    modal(photo(i + 3) + (tag(i + 1) ? "<p><b>" + tag(i + 1) + "</b></p>" : ""), () => {
+      room2();
+      say(S.found.length === 4 ? "All four photographs found here. The film on the clothesline is out of order. Can you fix it?" : "A photograph, added to your items.");
+    });
+  });
+  wire($("#stage"), map);
+  holdWrap(use);
+}
+
+/* ---------- ROOM 3 ---------- */
+let letterTypingTimer = null;
+function room3(){
+  const S = save.r3 = save.r3 || {};
+  if (letterTypingTimer) { clearTimeout(letterTypingTimer); letterTypingTimer = null; }
+  room(art3(S), true);
+  $("#inv").textContent = S.out
+    ? "✨ You brought every room in this house to life ✨"
+    : "Tap the birthday cake on the table to make a wish and blow out the candles";
+  const E = $("#extra");
+  const showLetter = animate => {
+    E.innerHTML = '<div id="fin" class="letter-box"></div>';
+    const L = $("#fin");
+    if (!animate) { L.textContent = CONFIG.letter; return; }
+    let i = 0;
+    (function t(){
+      L.textContent = CONFIG.letter.slice(0, i += 2);
+      if (i < CONFIG.letter.length) letterTypingTimer = setTimeout(t, 28);
+    })();
+  };
+  if (S.out) {
+    say("The moment you blew out the candles, your warmth lit up the whole house. Every room is brighter because of you.");
+    showLetter(!S.readOnce);
+    S.readOnce = true;
+    persist();
+  } else {
+    say("The room is quiet and dim, waiting for you. Tap the candles on your birthday cake to make a wish.");
+  }
+  wire($("#stage"), {
+    cake3: () => {
+      if (S.out) {
+        confetti();
+        chime([523.25, 659.25, 783.99, 1046.5]);
+        return say("You’re the sun that brightens up this whole house. Happy 18th birthday, bebi!");
+      }
+      blow(() => {
+        S.out = true;
+        S.readOnce = false;
+        persist();
+        confetti();
+        chime([523.25, 659.25, 783.99, 1046.5]);
+        playYouTubeSong();
+        room3();
+      });
+    }
+  });
+}
+
+function confetti(){
+  const c = $("#conf"), x = c.getContext("2d");
+  c.width = innerWidth; c.height = innerHeight;
+  const ps = Array.from({length:160}, () => ({x:Math.random()*c.width, y:-20 - Math.random()*c.height*.5, v:2 + Math.random()*3, r:3 + Math.random()*4, h:Math.random()*60 + 15}));
+  let f = 0;
+  (function a(){
+    x.clearRect(0, 0, c.width, c.height);
+    ps.forEach(p => { p.y += p.v; p.x += Math.sin((p.y + p.h) / 30); x.fillStyle = "hsl(" + p.h + ",80%,65%)"; x.fillRect(p.x, p.y, p.r, p.r * 1.6); });
+    if (++f < 420) requestAnimationFrame(a); else x.clearRect(0, 0, c.width, c.height);
+  })();
+}
+
+/* ---------- shell ---------- */
+function drawNav(){
+  const n = $("#nav"); n.innerHTML = "";
+  ROOMS.forEach((r, i) => {
+    const b = document.createElement("button");
+    b.textContent = "Room " + ["I","II","III"][i];
+    b.disabled = i + 1 > unlocked();
+    b.setAttribute("aria-current", current === i + 1);
+    b.onclick = () => { current = i + 1; show(); };
+    n.appendChild(b);
+  });
+  const mb = document.createElement("button");
+  mb.textContent = bgmMuted ? "Music: Off" : "Music: On";
+  mb.onclick = toggleBGM;
+  n.appendChild(mb);
+}
+function show(){
+  drawNav();
+  $("#title").textContent = ROOMS[current - 1].t;
+  $("#sub").textContent = "";
+  [room1, room2, room3][current - 1]();
+}
+if (DAY < 1) {
+  $("#stage").innerHTML = '<p id="msg" style="padding:60px 16px">The door is still locked, ' + CONFIG.herName + '. Come back on October 17.</p>';
+  $("#nav").innerHTML = "";
+} else { current = unlocked(); show(); }
+</script>
+</body>
+</html>
